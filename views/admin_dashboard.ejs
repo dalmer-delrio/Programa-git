@@ -1,0 +1,63 @@
+<%- include('partials/header') %>
+
+<main class="container py-5">
+  <h2 class="text-primary fw-bold mb-4">Panel de Administración</h2>
+
+  <div class="row text-center mb-5">
+    <div class="col-md-4">
+      <div class="card shadow border-0 rounded-4">
+        <div class="card-body">
+          <h5>Usuarios registrados</h5>
+          <h3 class="text-primary"><%= stats.totalUsuarios %></h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow border-0 rounded-4">
+        <div class="card-body">
+          <h5>Productos activos</h5>
+          <h3 class="text-success"><%= stats.totalProductos %></h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow border-0 rounded-4">
+        <div class="card-body">
+          <h5>Pedidos realizados</h5>
+          <h3 class="text-warning"><%= stats.totalPedidos %></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="fw-bold mb-3">Últimos pedidos</h4>
+  <table class="table table-hover shadow-sm">
+    <thead class="table-light">
+      <tr>
+        <th>ID Pedido</th>
+        <th>Cliente</th>
+        <th>Total</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (ultimosPedidos.length > 0) { %> <% ultimosPedidos.forEach(pedido =>
+      { %>
+      <tr>
+        <td><%= pedido.id_pedido %></td>
+        <td><%= pedido.nombre_cliente %></td>
+        <td>$<%= pedido.total.toLocaleString() %></td>
+        <td><%= new Date(pedido.fecha).toLocaleDateString() %></td>
+      </tr>
+      <% }) %> <% } else { %>
+      <tr>
+        <td colspan="4" class="text-center text-muted">
+          No hay pedidos recientes
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</main>
+
+<%- include('partials/footer') %>

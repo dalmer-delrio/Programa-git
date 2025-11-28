@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Catálogo — La Ferretería del Barrio</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+
+  <body>
+    <!-- 🔹 Navbar igual al del index -->
+    <header class="shadow-sm sticky-top bg-white">
+      <nav class="navbar navbar-expand-lg container py-2">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+          <img src="/images/logo.png" width="44" height="44" alt="Logo" />
+          <span class="brand-name fw-semibold">La Ferretería del Barrio</span>
+        </a>
+
+        <div class="ms-auto d-flex align-items-center gap-3">
+          <form
+            class="search-inline d-flex align-items-center"
+            action="/catalogo"
+            method="get"
+            role="search"
+          >
+            <input
+              class="form-control form-control-sm"
+              type="search"
+              name="q"
+              placeholder="Buscar..."
+              aria-label="Buscar"
+            />
+            <button class="btn btn-sm btn-outline-dark ms-1" type="submit">Buscar</button>
+          </form>
+
+          <div class="d-none d-lg-flex align-items-center gap-3">
+            <a class="nav-link px-2 fw-semibold text-dark" href="/">Inicio</a>
+            <a class="nav-link px-2 text-muted" href="/catalogo">Catálogo</a>
+            <a class="nav-link px-2 text-muted" href="/ofertas">Ofertas</a>
+            <a class="nav-link px-2 text-muted" href="/contacto">Contáctenos</a>
+
+            <a class="btn btn-brand position-relative" href="/carrito_publico">
+              Carrito
+              <span
+                id="cartCount"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                >0</span>
+            </a>
+
+            <a id="loginBtn" class="btn btn-outline-dark ms-2" href="/login">
+              Iniciar sesión
+            </a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- 🔹 Catálogo de productos -->
+    <main class="container py-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold">Catálogo de productos</h2>
+      </div>
+
+      <% if (q) { %>
+        <p class="text-muted mb-4">
+          Resultados de búsqueda para: <strong><%= q %></strong>
+        </p>
+      <% } %>
+
+      <div class="row g-4">
+        <% if (productos.length === 0) { %>
+          <div class="alert alert-warning text-center shadow-sm py-3">
+            <% if (q) { %>
+              <p class="mb-0">
+                ⚠️ No se encontraron productos que coincidan con "<strong><%= q %></strong>".
+              </p>
+            <% } else { %>
+              <p class="mb-0">⚠️ Aún no hay productos registrados en el catálogo.</p>
+            <% } %>
+          </div>
+        <% } else { %>
+          <% productos.forEach(p => { %>
+            <div class="col-md-3">
+              <div
+                class="card card-product h-100 position-relative shadow-sm border-0 rounded-4"
+                data-id="<%= p.id_producto %>"
+              >
+                <img
+                  src="/images/productos/<%= p.imagen && p.imagen.trim() !== '' ? p.imagen : 'placeholder.png' %>"
+                  alt="<%= p.nombre %>"
+                  class="card-img-top rounded-top-4"
+                  style="height: 200px; object-fit: cover;"
+                />
+                <div class="card-body text-center">
+                  <h5 class="fw-bold text-dark"><%= p.nombre %></h5>
+                  <p class="text-muted small mb-2"><%= p.descripcion %></p>
+                  <p class="fw-bold text-success">$ <%= Number(p.precio).toLocaleString('es-CO') %></p>
+                  <button
+                    class="btn btn-brand btn-sm add-cart"
+                    data-id="<%= p.id_producto %>"
+                    data-nombre="<%= p.nombre %>"
+                    data-precio="<%= p.precio %>"
+                    data-imagen="<%= p.imagen %>"
+                  >
+                    Agregar al carrito
+                  </button>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        <% } %>
+      </div>
+    </main>
+
+    <footer class="mt-5 py-4 bg-light-subtle border-top">
+      <div class="container small d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <span>© 2025 La Ferretería del Barrio</span>
+        <span class="text-muted">Desarrollado por Dalmer Del Río.</span>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/carritoPublico.js"></script>
+  </body>
+</html>

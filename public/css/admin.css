@@ -1,0 +1,75 @@
+/* ===== Panel del Administrador ===== */
+
+body {
+  background-color: #f8f9fa;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.navbar .navbar-brand span {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.navbar .nav-link {
+  transition: all 0.2s ease-in-out;
+}
+
+.navbar .nav-link:hover {
+  color: #0d6efd !important;
+}
+
+/* ===== Títulos ===== */
+h2.fw-bold {
+  font-size: 1.7rem;
+  border-left: 5px solid #0d6efd;
+  padding-left: 10px;
+}
+
+/* ===== Tarjetas de resumen ===== */
+.card.bg-primary,
+.card.bg-success,
+.card.bg-warning,
+.card.bg-info {
+  border: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card.bg-primary:hover,
+.card.bg-success:hover,
+.card.bg-warning:hover,
+.card.bg-info:hover {
+  transform: scale(1.03);
+}
+
+.card p.display-6 {
+  margin-bottom: 0;
+  font-weight: 700;
+}
+
+/* ===== Tabla ===== */
+.table {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.table thead {
+  background-color: #f1f3f5;
+  font-weight: 600;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f8f9fc;
+}
+
+/* ===== Footer ===== */
+footer {
+  background-color: #f1f3f5;
+  color: #6c757d;
+  font-size: 0.9rem;
+}

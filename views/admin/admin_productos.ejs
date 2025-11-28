@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Productos — La Ferretería del Barrio</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-light">
+
+  <main class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="text-primary fw-bold">Gestión de productos</h2>
+      <a href="/productos/agregar" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Agregar producto
+      </a>
+    </div>
+
+    <% if (success) { %>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body p-4">
+        <% if (productos.length === 0) { %>
+          <p class="text-muted text-center mb-0">No hay productos registrados.</p>
+        <% } else { %>
+          <div class="table-responsive">
+            <table class="table align-middle table-striped">
+              <thead class="table-primary text-center">
+                <tr>
+                  <th>ID</th>
+                  <th>Imagen</th>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Categoría</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% productos.forEach(p => { %>
+                  <tr>
+                    <td class="text-center"><%= p.id_producto %></td>
+                    <td class="text-center">
+                      <img src="/images/productos/<%= p.imagen || 'placeholder.png' %>"
+                           alt="<%= p.nombre_producto %>"
+                           width="60" height="60"
+                           style="object-fit: cover; border-radius: 8px;">
+                    </td>
+                    <td><%= p.nombre_producto %></td>
+                    <td><%= p.descripcion %></td>
+                    <td class="text-success fw-semibold">$<%= p.precio.toLocaleString() %></td>
+                    <td class="text-center"><%= p.stock %></td>
+                    <td><%= p.id_categoria || '—' %></td>
+                    <td class="text-center">
+                      <a href="/productos/editar/<%= p.id_producto %>" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil-square"></i> Editar
+                      </a>
+                      <form action="/productos/eliminar/<%= p.id_producto %>" method="POST" class="d-inline"
+                            onsubmit="return confirm('¿Seguro que deseas eliminar este producto?');">
+                        <button class="btn btn-danger btn-sm">
+                          <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <a href="/dashboard" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Volver al Dashboard
+      </a>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+</html>

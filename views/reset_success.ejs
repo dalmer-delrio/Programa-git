@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contraseña restablecida — La Ferretería del Barrio</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f1f4f9, #e0e7ff);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .success-container {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      width: 420px;
+      padding: 2.5rem;
+      text-align: center;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .success-header img {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 0.6rem;
+    }
+    .success-header h3 {
+      color: #007bff;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      color: #28a745;
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    a {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-container">
+    <div class="success-header">
+      <img src="/images/logo.png" alt="Logo Ferretería" />
+      <h3>La Ferretería del Barrio</h3>
+    </div>
+
+    <h2>¡Contraseña actualizada!</h2>
+    <p>Tu contraseña ha sido restablecida correctamente.  
+    Ya puedes iniciar sesión con tus nuevas credenciales.</p>
+
+    <a href="/login">Iniciar sesión</a>
+  </div>
+</body>
+</html>

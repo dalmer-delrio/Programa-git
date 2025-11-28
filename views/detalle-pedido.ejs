@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalle del Pedido - La Ferretería del Barrio</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <main class="dashboard-container">
+    <h1 class="titulo-dashboard">🧾 Detalle del pedido #<%= idPedido %></h1>
+
+    <% if (detalles.length === 0) { %>
+      <p class="text-muted">No hay detalles disponibles para este pedido.</p>
+    <% } else { %>
+      <section class="detalle-pedido">
+        <table class="tabla-detalle">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% detalles.forEach(d => { %>
+              <tr>
+                <td><%= d.nombre %></td>
+                <td>$<%= d.precio.toFixed(2) %></td>
+                <td><%= d.cantidad %></td>
+                <td>$<%= d.subtotal.toFixed(2) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+
+        <div class="acciones-pedido">
+          <a href="/historial" class="btn btn-azul">⬅ Volver al historial</a>
+          <a href="/comprobantes/<%= idPedido %>" target="_blank" class="btn btn-verde">
+            🧾 Ver comprobante
+          </a>
+        </div>
+      </section>
+    <% } %>
+  </main>
+
+  <style>
+    .dashboard-container {
+      padding: 40px;
+      text-align: center;
+      background-color: #f9fafc;
+      min-height: 100vh;
+    }
+
+    .titulo-dashboard {
+      font-size: 2rem;
+      color: #1a73e8;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    .detalle-pedido {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .tabla-detalle {
+      width: 90%;
+      max-width: 900px;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .tabla-detalle th {
+      background-color: #1a73e8;
+      color: #fff;
+      padding: 14px;
+      font-size: 1rem;
+    }
+
+    .tabla-detalle td {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .tabla-detalle tr:last-child td {
+      border-bottom: none;
+    }
+
+    .acciones-pedido {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+
+    .btn-azul {
+      background: #1a73e8;
+    }
+
+    .btn-verde {
+      background: #2e7d32;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      opacity: 0.9;
+    }
+  </style>
+</body>
+</html>

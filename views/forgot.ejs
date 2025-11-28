@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuperar contraseña — La Ferretería del Barrio</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f1f4f9, #e0e7ff);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .forgot-container {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      width: 420px;
+      padding: 2.5rem;
+      text-align: center;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .forgot-header img {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 0.6rem;
+    }
+    .forgot-header h3 {
+      color: #007bff;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 1.2rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    input[type="email"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .message {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #256029;
+      background: #ddffdd;
+      border-radius: 6px;
+      padding: 8px;
+    }
+
+    .error {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #a94442;
+      background: #ffdddd;
+      border-radius: 6px;
+      padding: 8px;
+    }
+
+    .extra-links {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="forgot-container">
+    <div class="forgot-header">
+      <img src="/images/logo.png" alt="Logo Ferretería" />
+      <h3>La Ferretería del Barrio</h3>
+    </div>
+
+    <h2>Recuperar contraseña</h2>
+    <p>Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.</p>
+
+    <% if (message) { %>
+      <div class="message"><%= message %></div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="error"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/forgot">
+      <input type="email" name="correo" placeholder="Correo electrónico" required />
+      <button type="submit">Enviar enlace</button>
+    </form>
+
+    <div class="extra-links">
+      <a href="/login">Volver al inicio de sesión</a>
+    </div>
+  </div>
+</body>
+</html>

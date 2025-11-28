@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro — La Ferretería del Barrio</title>
+
+  <!-- Bootstrap 5 -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f1f4f9, #e0e7ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .register-container {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      width: 450px;
+      padding: 2.5rem;
+      text-align: center;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .register-header img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 0.8rem;
+    }
+
+    .register-header h3 {
+      color: #007bff;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    form label {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 3px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      transition: 0.3s;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="register-header">
+      <img src="/images/logo.png" alt="Logo Ferretería" />
+      <h3>La Ferretería del Barrio</h3>
+    </div>
+
+    <h2 class="h5 mb-3 fw-bold">Crear cuenta</h2>
+
+    <% if (error) { %>
+      <div class="alert alert-danger py-2"><%= error %></div>
+    <% } %>
+
+    <% if (success) { %>
+      <div class="alert alert-success py-2"><%= success %></div>
+    <% } %>
+
+    <form method="POST" action="/register" novalidate>
+      <div class="mb-2 text-start">
+        <label>Nombre completo</label>
+        <input type="text" name="nombre" class="form-control" placeholder="Ej: Juan Pérez" required />
+      </div>
+
+      <div class="mb-2 text-start">
+        <label>Correo electrónico</label>
+        <input type="email" name="correo" class="form-control" placeholder="ejemplo@correo.com" required />
+      </div>
+
+      <div class="mb-2 text-start">
+        <label>Teléfono</label>
+        <input type="text" name="telefono" class="form-control" placeholder="Ej: 3001234567" />
+      </div>
+
+      <div class="mb-2 text-start">
+        <label>Dirección</label>
+        <input type="text" name="direccion" class="form-control" placeholder="Ej: Calle 10 # 5-15" />
+      </div>
+
+      <div class="mb-2 text-start">
+        <label>Contraseña</label>
+        <input type="password" name="password" class="form-control" placeholder="Mínimo 6 caracteres" required />
+      </div>
+
+      <div class="mb-2 text-start">
+        <label>Confirmar contraseña</label>
+        <input type="password" name="confirmar" class="form-control" placeholder="Repite tu contraseña" required />
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mt-2">Registrarse</button>
+    </form>
+
+    <div class="extra-links mt-3">
+      <p class="mb-0">¿Ya tienes una cuenta? 
+        <a href="/login" class="text-decoration-none fw-semibold">Inicia sesión aquí</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- 🔹 Modal de éxito -->
+  <div class="modal fade" id="registroExitoso" tabindex="-1" aria-labelledby="registroExitosoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center p-3">
+        <h5 class="mb-3 text-success fw-bold">✅ Cuenta creada correctamente</h5>
+        <p>Ya puedes iniciar sesión con tus credenciales.</p>
+        <button class="btn btn-primary w-50 mx-auto" onclick="window.location.href='/login'">
+          Ir a iniciar sesión
+        </button>
+      </div>
+    </div>
+  </div>
+
+ <script>
+  // ✅ Validar que las contraseñas coincidan antes de enviar
+  document.querySelector("form").addEventListener("submit", (e) => {
+    const pass = document.querySelector('input[name="password"]').value;
+    const confirm = document.querySelector('input[name="confirmar"]').value;
+    if (pass !== confirm) {
+      e.preventDefault();
+      alert("❌ Las contraseñas no coinciden.");
+    }
+  });
+</script>
+
+<!-- ✅ Este bloque EJS no se evaluará como JS por VS Code -->
+<script type="text/ejs">
+  <% if (success) { %>
+    <script>
+      window.addEventListener("load", () => {
+        const modal = new bootstrap.Modal(document.getElementById("registroExitoso"));
+        modal.show();
+      });
+    </script>
+  <% } %>
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

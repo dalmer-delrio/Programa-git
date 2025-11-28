@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil de Usuario - La Ferretería del Barrio</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main class="perfil-container">
+    <h1>👤 Mi Perfil</h1>
+<form action="/perfil" method="POST" enctype="multipart/form-data" class="perfil-form">
+  <div class="foto-container">
+    <img 
+      src="<%= usuario.foto ? '/uploads/usuarios/' + usuario.foto : '/img/avatar-default.png' %>" 
+      alt="Foto de perfil" 
+      class="foto-perfil"
+    >
+    <label for="foto" class="btn btn-azul">📷 Cambiar foto</label>
+    <input type="file" id="foto" name="foto" accept="image/*" style="display:none;">
+  </div>
+
+  <label>Nombre</label>
+  <input type="text" name="nombre" value="<%= usuario.nombre %>" required>
+
+  <label>Correo electrónico</label>
+  <input type="email" name="correo" value="<%= usuario.correo %>" readonly>
+
+  <label>Teléfono</label>
+  <input type="text" name="telefono" value="<%= usuario.telefono || '' %>">
+
+  <label>Dirección</label>
+  <input type="text" name="direccion" value="<%= usuario.direccion || '' %>">
+
+  <label>Nueva contraseña (opcional)</label>
+  <input type="password" name="password" placeholder="********">
+
+  <button type="submit" class="btn btn-verde">💾 Guardar cambios</button>
+</form>
+
+
+    <% if (mensaje) { %>
+      <p class="mensaje"><%= mensaje %></p>
+    <% } %>
+
+    <a href="/dashboard" class="btn btn-azul">⬅ Volver al Dashboard</a>
+  </main>
+
+  <style>
+    .perfil-container {
+      width: 400px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #1a73e8;
+      margin-bottom: 20px;
+    }
+    .perfil-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    label {
+      font-weight: bold;
+      text-align: left;
+    }
+    input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .btn {
+      margin-top: 15px;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+    }
+    .btn-verde { background: #2e7d32; border: none; cursor: pointer; }
+    .btn-azul { background: #1a73e8; display: block; margin-top: 10px; }
+    .mensaje {
+      color: #2e7d32;
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .foto-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .foto-perfil {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    margin-bottom: 10px;
+  }
+  </style>
+</body>
+</html>

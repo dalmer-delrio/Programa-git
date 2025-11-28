@@ -1,0 +1,22 @@
+{
+  // ⛔ Evita que Prettier intente formatear archivos .ejs como si fueran HTML o Angular
+  "files.associations": {
+    "*.ejs": "html"
+  },
+
+  // ⛔ Desactiva el autoformato SOLO para HTML
+  "[html]": {
+    "editor.formatOnSave": false
+  },
+
+  // ⛔ Desactiva el autoformato SOLO para EJS (más importante)
+  "[ejs]": {
+    "editor.formatOnSave": false
+  },
+
+  // ✔ Prettier sigue habilitado, pero ya NO toca tus EJS
+  "prettier.enable": true,
+
+  // ⛔ Evita que Prettier exija un archivo .prettierrc
+  "prettier.requireConfig": false
+}

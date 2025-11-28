@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restablecer contraseña — La Ferretería del Barrio</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f1f4f9, #e0e7ff);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .reset-container {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      width: 420px;
+      padding: 2.5rem;
+      text-align: center;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reset-header img {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 0.6rem;
+    }
+    .reset-header h3 {
+      color: #007bff;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    input[type="password"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .error {
+      background: #ffdddd;
+      color: #a94442;
+      padding: 8px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .extra-links {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="reset-container">
+    <div class="reset-header">
+      <img src="/images/logo.png" alt="Logo Ferretería" />
+      <h3>La Ferretería del Barrio</h3>
+    </div>
+
+    <h2>Restablecer contraseña</h2>
+
+    <% if (error) { %>
+      <div class="error"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/reset">
+      <input type="hidden" name="token" value="<%= token %>" />
+      <input type="password" name="password" placeholder="Nueva contraseña" required />
+      <input type="password" name="confirmar" placeholder="Confirmar nueva contraseña" required />
+      <button type="submit">Guardar nueva contraseña</button>
+    </form>
+
+    <div class="extra-links">
+      <a href="/login">Volver al inicio de sesión</a>
+    </div>
+  </div>
+
+  <script>
+    // Validar que las contraseñas coincidan antes de enviar
+    document.querySelector("form").addEventListener("submit", (e) => {
+      const pass = document.querySelector('input[name="password"]').value;
+      const confirm = document.querySelector('input[name="confirmar"]').value;
+      if (pass !== confirm) {
+        e.preventDefault();
+        alert("❌ Las contraseñas no coinciden.");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+
+CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `usuario_id` INT NOT NULL,
+  `token` VARCHAR(255) NOT NULL,
+  `expira_en` DATETIME NOT NULL,
+  `creado_en` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id_usuario`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

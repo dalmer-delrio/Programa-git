@@ -1,0 +1,94 @@
+// controllers/comprobanteController.js
+const db = require('../models/db');
+const PDFDocument = require('pdfkit');
+const path = require('path');
+
+exports.verComprobante = async (req, res) => {
+  const idPedido = req.params.id;
+
+  try {
+    // Obtener datos del pedido
+    const [pedidoRows] = await db.query(
+      `SELECT v.id_venta, v.total, v.fecha, u.nombre, u.correo, u.direccion
+       FROM ventas v
+       JOIN usuarios u ON v.usuario_id = u.id_usuario
+       WHERE v.id_venta = ?`,
+      [idPedido]
+    );
+
+    if (pedidoRows.length === 0) {
+      return res.status(404).send('Pedido no encontrado');
+    }
+
+    const pedido = pedidoRows[0];
+
+    // Obtener detalles del pedido
+    const [detalles] = await db.query(
+      `SELECT p.nombre, dv.cantidad, dv.precio, (dv.cantidad * dv.precio) AS subtotal
+       FROM detalle_venta dv
+       JOIN productos p ON dv.producto_id = p.id_producto
+       WHERE dv.venta_id = ?`,
+      [idPedido]
+    );
+
+    // Configurar cabeceras para PDF
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename=comprobante_${idPedido}.pdf`);
+
+    // Crear documento PDF
+    const doc = new PDFDocument({ margin: 50 });
+    doc.pipe(res);
+
+    // 📦 Ruta al logo
+    const logoPath = path.join(__dirname, '../public/img/logo.png');
+
+    // 🧱 Encabezado con logo y título
+    doc.image(logoPath, 50, 40, { width: 70 })
+       .fontSize(20)
+       .fillColor('#1a73e8')
+       .text('La Ferretería del Barrio', 130, 50)
+       .fontSize(12)
+       .fillColor('#000')
+       .text('Comprobante de compra', 130, 75)
+       .moveDown(2);
+
+    // 🔹 Línea divisoria
+    doc.moveTo(50, 110).lineTo(550, 110).strokeColor('#1a73e8').stroke();
+    doc.moveDown(2);
+
+    // 👤 Información del cliente
+    doc.fontSize(12)
+       .fillColor('#000')
+       .text(`Cliente: ${pedido.nombre}`)
+       .text(`Correo: ${pedido.correo}`)
+       .text(`Dirección: ${pedido.direccion || 'No registrada'}`)
+       .moveDown(1);
+
+    // 📅 Fecha y total
+    doc.text(`Fecha: ${new Date(pedido.fecha).toLocaleDateString()}`);
+    doc.text(`Total: $${pedido.total.toFixed(2)}`).moveDown(1.5);
+
+    // 🧾 Detalles del pedido
+    doc.fontSize(14).fillColor('#1a73e8').text('Detalles del pedido', { underline: true });
+    doc.moveDown(0.5);
+
+    detalles.forEach((d) => {
+      doc.fontSize(12)
+         .fillColor('#000')
+         .text(`${d.nombre}  x${d.cantidad}  -  $${d.precio.toFixed(2)}  →  Subtotal: $${d.subtotal.toFixed(2)}`);
+    });
+
+    // 🪪 Pie de página
+    doc.moveDown(2);
+    doc.fontSize(10)
+       .fillColor('#555')
+       .text('Gracias por tu compra 🛠️', { align: 'center' })
+       .moveDown(0.2)
+       .text('La Ferretería del Barrio - Todos los derechos reservados ©', { align: 'center' });
+
+    doc.end();
+  } catch (error) {
+    console.error('Error generando comprobante:', error);
+    res.status(500).send('Error generando comprobante');
+  }
+};

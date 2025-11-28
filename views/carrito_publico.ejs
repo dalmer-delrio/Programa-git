@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Carrito Público — La Ferretería del Barrio</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+
+  <body>
+    <!-- 🔹 Navbar igual al del index -->
+    <header class="shadow-sm sticky-top bg-white">
+      <nav class="navbar navbar-expand-lg container py-2">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+          <img src="/assets/logo.png" width="44" height="44" alt="Logo" />
+          <span class="brand-name">La Ferretería del Barrio</span>
+        </a>
+
+        <div class="ms-auto d-flex align-items-center gap-3">
+          <form
+            class="search-inline d-flex align-items-center"
+            action="/catalogo"
+            method="get"
+            role="search"
+          >
+            <input
+              class="form-control form-control-sm"
+              type="search"
+              name="q"
+              placeholder="Buscar..."
+              aria-label="Buscar"
+            />
+            <button class="btn btn-sm" type="submit">Buscar</button>
+          </form>
+
+          <div class="d-none d-lg-flex align-items-center gap-3">
+            <a class="nav-link px-2 fw-semibold text-dark" href="/">Inicio</a>
+            <a class="nav-link px-2 text-muted" href="/catalogo">Catálogo</a>
+            <a class="nav-link px-2 text-muted" href="/ofertas">Ofertas</a>
+            <a class="nav-link px-2 text-muted" href="/contacto">Contáctenos</a>
+            <a class="btn btn-brand position-relative" href="/carrito_publico">
+              Carrito
+              <span
+                id="cartCount"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                >0</span
+              >
+            </a>
+            <a id="loginBtn" class="btn btn-outline-dark ms-2" href="/login"
+              >Iniciar sesión</a
+            >
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- 🔹 Contenido principal -->
+    <main class="container py-5">
+      <h2 class="fw-bold mb-4 text-primary text-center">🛒 Tu carrito</h2>
+
+      <div id="carritoContainer" class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="carritoBody"></tbody>
+        </table>
+      </div>
+
+      <div class="text-end mt-4">
+        <h4>Total: <span id="totalCarrito" class="text-success">$0</span></h4>
+        <button
+          class="btn btn-outline-danger mt-3 me-2"
+          data-bs-toggle="modal"
+          data-bs-target="#confirmVaciar"
+        >
+          Vaciar carrito
+        </button>
+        <button id="finalizarBtn" class="btn btn-brand mt-3">
+          Finalizar compra
+        </button>
+      </div>
+    </main>
+
+    <!-- 🔹 Modal de confirmación -->
+    <div
+      class="modal fade"
+      id="confirmVaciar"
+      tabindex="-1"
+      aria-labelledby="confirmVaciarLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+          <div class="modal-header bg-danger text-white rounded-top-4">
+            <h5 class="modal-title" id="confirmVaciarLabel">Vaciar carrito</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body text-center">
+            <p class="mb-3">
+              ¿Seguro que deseas eliminar todos los productos del carrito?
+            </p>
+            <button
+              type="button"
+              class="btn btn-secondary me-2"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" id="confirmVaciarBtn" class="btn btn-danger">
+              Sí, vaciar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="mt-5 py-4 bg-light-subtle border-top">
+      <div
+        class="container small d-flex flex-wrap gap-2 justify-content-between align-items-center"
+      >
+        <span>© 2025 La Ferretería del Barrio</span>
+        <span class="text-muted">Dalmer Del Río.</span>
+      </div>
+    </footer>
+
+    <script>
+      const tbody = document.getElementById("carritoBody");
+      const totalCarrito = document.getElementById("totalCarrito");
+      const contador = document.getElementById("cartCount");
+
+      function cargarCarrito() {
+        const carrito =
+          JSON.parse(localStorage.getItem("carritoPublico")) || [];
+        tbody.innerHTML = "";
+        let total = 0;
+
+        carrito.forEach((p, i) => {
+          const subtotal = p.precio * (p.cantidad || 1);
+          total += subtotal;
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><img src="/images/productos/${
+              p.imagen || "placeholder.png"
+            }" width="50" class="me-2 rounded"> ${p.nombre}</td>
+            <td>$${p.precio}</td>
+            <td>${p.cantidad || 1}</td>
+            <td>$${subtotal}</td>
+            <td><button class="btn btn-sm btn-outline-danger" onclick="eliminarProducto(${i})">🗑️</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        totalCarrito.textContent = `$${total.toLocaleString()}`;
+        contador.textContent = carrito.length;
+      }
+
+      function eliminarProducto(index) {
+        let carrito = JSON.parse(localStorage.getItem("carritoPublico")) || [];
+        const productoEliminado = carrito[index]?.nombre || "Producto";
+
+        carrito.splice(index, 1);
+        localStorage.setItem("carritoPublico", JSON.stringify(carrito));
+        cargarCarrito();
+
+        // 🩵 Modal elegante de confirmación con cierre automático
+        const modal = document.createElement("div");
+        modal.classList.add("modal", "fade");
+        modal.innerHTML = `
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center p-3">
+        <h5 class="mb-3">🗑️ ${productoEliminado} eliminado del carrito</h5>
+        <p class="text-muted small mb-2">(Se cerrará automáticamente)</p>
+        <button class="btn btn-brand w-50 mx-auto" data-bs-dismiss="modal">Aceptar</button>
+      </div>
+    </div>`;
+        document.body.appendChild(modal);
+
+        const modalInstance = new bootstrap.Modal(modal);
+        modalInstance.show();
+
+        // 🔹 Cierre automático a los 2 segundos
+        setTimeout(() => {
+          modalInstance.hide();
+        }, 5000);
+
+        modal.addEventListener("hidden.bs.modal", () => modal.remove());
+      }
+
+      document
+        .getElementById("confirmVaciarBtn")
+        .addEventListener("click", () => {
+          localStorage.removeItem("carritoPublico");
+          cargarCarrito();
+
+          const modalVaciar = bootstrap.Modal.getInstance(
+            document.getElementById("confirmVaciar")
+          );
+          modalVaciar.hide();
+
+          // 🩵 Modal visual de confirmación
+          const modal = document.createElement("div");
+          modal.classList.add("modal", "fade");
+          modal.innerHTML = `
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center p-3">
+        <h5 class="mb-3">🧹 Carrito vaciado correctamente</h5>
+        <p class="text-muted small mb-2">(Se cerrará automáticamente)</p>
+        <button class="btn btn-brand w-50 mx-auto" data-bs-dismiss="modal">Aceptar</button>
+      </div>
+    </div>`;
+          document.body.appendChild(modal);
+
+          const modalInstance = new bootstrap.Modal(modal);
+          modalInstance.show();
+
+          // 🔹 Cierre automático después de 2 segundos
+          setTimeout(() => {
+            modalInstance.hide();
+          }, 5000);
+
+          modal.addEventListener("hidden.bs.modal", () => modal.remove());
+        });
+
+      document.getElementById("finalizarBtn").addEventListener("click", () => {
+        alert("🔐 Debes iniciar sesión para finalizar tu compra.");
+        window.location.href = "/login";
+      });
+
+      cargarCarrito();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/carritoPublico.js"></script>
+  </body>
+</html>
