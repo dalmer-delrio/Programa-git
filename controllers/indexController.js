@@ -1,27 +1,37 @@
-// controllers/indexController.js
-const db = require("../config/db");
+const pool = require('../config/db');
 
-module.exports = {
-  async mostrarInicio(req, res) {
-    try {
-      const [productos] = await db.query(
-        `SELECT p.*, c.nombre_categoria 
-         FROM productos p
-         LEFT JOIN categorias c ON p.id_categoria = c.id_categoria`
-      );
+exports.mostrarInicio = async (req, res) => {
+  try {
+    // Productos por categoría
+    const [productos] = await pool.query(`
+      SELECT p.*, c.nombre_categoria 
+      FROM productos p
+      JOIN categorias c ON p.id_categoria = c.id_categoria
+      ORDER BY c.nombre_categoria;
+    `);
 
-      // Agrupar productos por categoría
-      const categorias = {};
-      productos.forEach(p => {
-        const categoria = p.nombre_categoria || "Otros";
-        if (!categorias[categoria]) categorias[categoria] = [];
-        categorias[categoria].push(p);
-      });
+    // Ofertas reales desde la BD
+    const [ofertas] = await pool.query(`
+      SELECT *
+      FROM productos
+      WHERE oferta = 1
+      LIMIT 5;
+    `);
 
-      res.render("index", { categorias });
-    } catch (error) {
-      console.error("Error cargando index:", error);
-      res.render("index", { categorias: {} });
-    }
+    // Agrupar productos por categoría
+    const categorias = {};
+    productos.forEach(p => {
+      if (!categorias[p.nombre_categoria]) categorias[p.nombre_categoria] = [];
+      categorias[p.nombre_categoria].push(p);
+    });
+
+    res.render("index", {
+      categorias,
+      ofertas
+    });
+
+  } catch (error) {
+    console.error("Error en mostrarInicio:", error);
+    res.status(500).send("Error cargando inicio");
   }
 };

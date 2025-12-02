@@ -86,13 +86,58 @@ body{
 }
 .card-product .add-cart:hover{filter:brightness(.95)}
 
-/* ====== Pure CSS Carousel ====== */
-.carousel-css{position:relative; overflow:hidden; border-radius:.75rem}
-.carousel-css .track{display:flex; width:400%;}
-.carousel-css .slide{width:100%; flex-shrink:0; position:relative}
-.carousel-css .slide img{width:100%; height:300px; object-fit:cover; display:block}
+/* ========================================================= */
+/* 🔥🔥🔥 NUEVO CARRUSEL RESPONSIVO REEMPLAZA EL ANTERIOR 🔥🔥🔥 */
+/* ========================================================= */
 
-/* Autoplay: stops on each slide using steps in keyframes */
+.carousel-css{
+  position:relative;
+  overflow:hidden;
+  border-radius:.75rem;
+}
+
+.carousel-css .track{
+  display:flex;
+  width:400%;
+  transition: transform 0.4s ease;
+  animation: slider 20s ease-in-out infinite;
+}
+
+.carousel-css .slide{
+  min-width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#fff;
+  height:220px;         /* 🔥 altura ideal */
+}
+
+.carousel-css .slide img{
+  max-height:200px;
+  width:auto;
+  object-fit:contain;   /* 🔥 no corta la imagen */
+  display:block;
+}
+
+/* Dots */
+.carousel-dots{
+  position:absolute;
+  left:0; right:0;
+  bottom:10px;
+  display:flex;
+  gap:8px;
+  justify-content:center;
+}
+
+.carousel-dots .dot{
+  width:10px;
+  height:10px;
+  background:#d1d5db;
+  border-radius:999px;
+  opacity:.6;
+}
+
+/* Animación original del slider */
 @keyframes slider {
   0%, 20%   { transform: translateX(0%); }
   25%, 45%  { transform: translateX(-100%); }
@@ -100,31 +145,12 @@ body{
   75%, 95%  { transform: translateX(-300%); }
   100%      { transform: translateX(0%); }
 }
-.carousel-css .track{ animation: slider 20s ease-in-out infinite; }
 
-/* Dots indicator synced with animation */
-.carousel-dots{ position:absolute; left:0; right:0; bottom:10px; display:flex; gap:8px; justify-content:center; }
-.carousel-dots .dot{ width:10px; height:10px; border-radius:999px; background:#d1d5db; opacity:.6 }
-.carousel-dots .dot::after{ content:''; display:block; width:10px; height:10px; border-radius:999px; }
-@keyframes dot1 { 0%,20%{opacity:1} 21%,100%{opacity:.4} }
-@keyframes dot2 { 0%,24%{opacity:.4} 25%,45%{opacity:1} 46%,100%{opacity:.4} }
-@keyframes dot3 { 0%,49%{opacity:.4} 50%,70%{opacity:1} 71%,100%{opacity:.4} }
-@keyframes dot4 { 0%,74%{opacity:.4} 75%,95%{opacity:1} 96%,100%{opacity:.4} }
-.carousel-dots .dot:nth-child(1){ animation: dot1 20s infinite }
-.carousel-dots .dot:nth-child(2){ animation: dot2 20s infinite }
-.carousel-dots .dot:nth-child(3){ animation: dot3 20s infinite }
-.carousel-dots .dot:nth-child(4){ animation: dot4 20s infinite }
+/* ========================================================= */
+/* 🔥 FIN del nuevo carrusel */
+/* ========================================================= */
 
-/* Ajuste de imágenes del carrusel */
-.carousel .slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background-color: #fff;
-  border-radius: 10px;
-}
-
-/* ====== 🔹 Botones de Inicio / Cierre de sesión ====== */
+/* ====== Botones de Inicio / Cierre de sesión ====== */
 .btn-login {
   background-color: #1a73e8;
   color: #fff !important;
@@ -149,4 +175,81 @@ body{
 }
 .btn-logout:hover {
   background-color: #c62828;
+}
+
+/* ----- ARREGLO DE IMÁGENES DE PRODUCTOS ----- */
+.card-product img {
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  background-color: #fff;
+  padding: 10px;
+}
+
+/* ----- TÍTULOS DE CATEGORÍAS ----- */
+.category-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+/* ========================================================= */
+/* 🔥 NUEVO CARRUSEL FADE CON ALTURA 250px */
+/* ========================================================= */
+
+.carousel-fade-custom {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.carousel-fade-custom .fade-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: fadeCarousel 20s infinite;
+}
+
+.carousel-fade-custom img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #fff;
+}
+
+/* Múltiples imágenes → cada una entra en distinto punto */
+.carousel-fade-custom .fade-slide:nth-child(1) { animation-delay: 0s; }
+.carousel-fade-custom .fade-slide:nth-child(2) { animation-delay: 4s; }
+.carousel-fade-custom .fade-slide:nth-child(3) { animation-delay: 8s; }
+.carousel-fade-custom .fade-slide:nth-child(4) { animation-delay: 12s; }
+.carousel-fade-custom .fade-slide:nth-child(5) { animation-delay: 16s; }
+
+@keyframes fadeCarousel {
+  0%   { opacity: 0; }
+  5%   { opacity: 1; }
+  25%  { opacity: 1; }
+  30%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Dots */
+.fade-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.fade-dots .dot {
+  width: 10px;
+  height: 10px;
+  background: #ddd;
+  border-radius: 50%;
+  opacity: 0.6;
 }
